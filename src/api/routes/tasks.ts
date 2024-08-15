@@ -121,14 +121,14 @@ router.patch("/update-task", async (req, res) => {
     typeof id !== "string" ||
     id?.trim() === "" ||
     (!title && !dueDate && !description && !status) ||
-    (status && (status !== "pending" || status !== "completed"))
+    (status && status !== "pending" && status !== "completed")
   ) {
     return res.status(400).send({
       message: !id
         ? "ID should be required field."
         : id?.trim() === ""
         ? "Enter valid ID."
-        : status && (status !== "pending" || status !== "completed")
+        : status && status !== "pending" && status !== "completed"
         ? "Invalid status"
         : !title && !dueDate && !description && !status
         ? "Either provide tile, Due date, description, status."
