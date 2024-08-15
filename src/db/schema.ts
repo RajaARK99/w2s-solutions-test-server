@@ -12,7 +12,7 @@ import { z } from "zod";
 
 import { nameZodSchema, passwordZodSchema } from "../helper/index";
 
-export const statusEnum = pgEnum("status", ["pending", "completed"]);
+export const statusEnum = pgEnum("status", ["pending", "hold", "completed"]);
 
 const usersTable = pgTable("users_table", {
   id: uuid("id").defaultRandom().primaryKey(),

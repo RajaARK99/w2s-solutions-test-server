@@ -1,5 +1,5 @@
 {
-  "id": "5dde84e4-1b72-4212-87a4-c35da6a8ed81",
+  "id": "97ec6d9a-60e5-47e0-8c99-62e774611985",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -130,6 +130,7 @@
       "schema": "public",
       "values": [
         "pending",
+        "hold",
         "completed"
       ]
     }

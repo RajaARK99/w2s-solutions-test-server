@@ -14,7 +14,9 @@ router.get("/", async (req, res) => {
     req.query.limit && !isNaN(+req.query.limit) ? +req.query.limit : 10;
   const status =
     req.query.status &&
-    (req.query.status === "pending" || req.query.status === "completed")
+    (req.query.status === "pending" ||
+      req.query.status === "hold" ||
+      req.query.status === "completed")
       ? req.query.status
       : null;
 
@@ -140,14 +142,20 @@ router.patch("/update-task", async (req, res) => {
     typeof id !== "string" ||
     id?.trim() === "" ||
     (!title && !dueDate && !description && !status) ||
-    (status && status !== "pending" && status !== "completed")
+    (status &&
+      status !== "pending" &&
+      status !== "hold" &&
+      status !== "completed")
   ) {
     return res.status(400).send({
       message: !id
         ? "ID should be required field."
         : id?.trim() === ""
         ? "Enter valid ID."
-        : status && status !== "pending" && status !== "completed"
+        : status &&
+          status !== "pending" &&
+          status !== "hold" &&
+          status !== "completed"
         ? "Invalid status"
         : !title && !dueDate && !description && !status
         ? "Either provide tile, Due date, description, status."
