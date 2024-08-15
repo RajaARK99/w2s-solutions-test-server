@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
       const hasPrevPage = page > 1;
 
       const tasks = {
-        task: await db
+        tasks: await db
           .select({
             id: tasksTable.id,
             title: tasksTable.title,
@@ -96,7 +96,7 @@ router.post("/create-task", async (req, res) => {
           });
         }
 
-        return res.send(omitObjectKey(tasks, ["userId"]));
+        return res.send(omitObjectKey(tasks, ["userId", "createdAt"]));
       } catch (err) {
         return res.status(400).send(err);
       }
@@ -156,7 +156,9 @@ router.patch("/update-task", async (req, res) => {
           )?.[0];
 
           if (updatedTask?.id) {
-            return res.send(omitObjectKey(updatedTask, ["userId"]));
+            return res.send(
+              omitObjectKey(updatedTask, ["userId", "createdAt"])
+            );
           } else {
             return res.status(400).send({
               message: "Cannot update task.",
@@ -182,9 +184,9 @@ router.patch("/update-task", async (req, res) => {
   }
 });
 
-router.delete("/delete-task", async (req, res) => {
+router.delete("/delete-task/:id", async (req, res) => {
   const token = req?.headers?.["authorization"]?.split(" ")?.[1];
-  const { id } = req.body;
+  const id = req.params.id;
   if (!id || id?.trim() === "") {
     return res.status(400).send({
       message: !id ? "ID should be required field" : "Enter valid ID",
