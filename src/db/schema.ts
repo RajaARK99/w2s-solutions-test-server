@@ -31,6 +31,7 @@ const tasksTable = pgTable("tasks_table", {
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").$onUpdate(() => new Date()),
 });
 
 const insertUserSchema = createInsertSchema(usersTable, {

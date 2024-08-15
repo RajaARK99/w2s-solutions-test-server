@@ -1,4 +1,4 @@
-import { count, eq } from "drizzle-orm";
+import { and, asc, count, desc, eq, sql } from "drizzle-orm";
 import express from "express";
 
 import { db, tasksTable } from "../../db";
@@ -12,6 +12,11 @@ router.get("/", async (req, res) => {
   const page = req.query.page && !isNaN(+req.query.page) ? +req.query.page : 1;
   const limit =
     req.query.limit && !isNaN(+req.query.limit) ? +req.query.limit : 10;
+  const status =
+    req.query.status &&
+    (req.query.status === "pending" || req.query.status === "completed")
+      ? req.query.status
+      : null;
 
   if (token) {
     const user = await getUserByToken(token);
@@ -22,7 +27,12 @@ router.get("/", async (req, res) => {
           await db
             .select({ count: count() })
             .from(tasksTable)
-            .where(eq(tasksTable.userId, user?.id))
+            .where(
+              and(
+                eq(tasksTable.userId, user?.id),
+                status ? eq(tasksTable.status, status) : sql`true`
+              )
+            )
         )?.[0]?.count ?? 0;
 
       const totalPages = Math.ceil(totalDocs / limit);
@@ -39,7 +49,14 @@ router.get("/", async (req, res) => {
             status: tasksTable.status,
           })
           .from(tasksTable)
-          .where(eq(tasksTable.userId, user?.id))
+          .groupBy(tasksTable.userId, tasksTable.createdAt, tasksTable?.id)
+          .orderBy(desc(tasksTable.createdAt))
+          .where(
+            and(
+              eq(tasksTable.userId, user?.id),
+              status ? eq(tasksTable.status, status) : sql`true`
+            )
+          )
           .limit(limit)
           .offset(offset),
         hasNextPage,
@@ -96,7 +113,9 @@ router.post("/create-task", async (req, res) => {
           });
         }
 
-        return res.send(omitObjectKey(tasks, ["userId", "createdAt"]));
+        return res.send(
+          omitObjectKey(tasks, ["userId", "createdAt", "updatedAt"])
+        );
       } catch (err) {
         return res.status(400).send(err);
       }
@@ -157,7 +176,7 @@ router.patch("/update-task", async (req, res) => {
 
           if (updatedTask?.id) {
             return res.send(
-              omitObjectKey(updatedTask, ["userId", "createdAt"])
+              omitObjectKey(updatedTask, ["userId", "createdAt", "updatedAt"])
             );
           } else {
             return res.status(400).send({
@@ -210,7 +229,9 @@ router.delete("/delete-task/:id", async (req, res) => {
             });
           }
 
-          return res.send(deletedTask);
+          return res.send(
+            omitObjectKey(deletedTask, ["userId", "createdAt", "updatedAt"])
+          );
         } else {
           return res.status(401).send({
             message: "Cannot find task.",

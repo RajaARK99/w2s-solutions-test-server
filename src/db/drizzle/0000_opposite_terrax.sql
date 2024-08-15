@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS "tasks_table" (
 	"due_date" timestamp,
 	"status" "status" DEFAULT 'pending' NOT NULL,
 	"user_id" uuid NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users_table" (
