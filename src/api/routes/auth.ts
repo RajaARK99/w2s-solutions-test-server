@@ -86,7 +86,10 @@ router.post("/sign-in", async (req, res) => {
           expiresIn: "30d",
         }
       );
-      return res.send({ token });
+      return res.send({
+        token,
+        user: { name: user?.name, email: user?.email, id: user?.id },
+      });
     } else {
       return res.status(401).send({
         message: "invalid credentials.",
