@@ -66,11 +66,11 @@ router.get("/year-metrics", async (req, res) => {
   if (token) {
     const user = await getUserByToken(token);
     if (user?.id) {
-      const totalTask = await getTotalTasksByYear(user, year);
+      const tasks = await getTotalTasksByYear(user, year);
 
       return res.send({
         year,
-        task: totalTask,
+        tasks,
       });
     } else {
       return res.status(403).send({
