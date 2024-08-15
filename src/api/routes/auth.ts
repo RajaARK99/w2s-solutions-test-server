@@ -30,7 +30,7 @@ router.post("/sign-up", async (req, res) => {
       .returning();
 
     if (!results || results.length < 1) {
-      return res.status(500).send({ message: "User could not be created." });
+      return res.status(400).send({ message: "User could not be created." });
     }
 
     return res.send({
@@ -39,7 +39,7 @@ router.post("/sign-up", async (req, res) => {
   } catch (e) {
     const error = e as unknown as NeonDbError;
     return res
-      .status(500)
+      .status(400)
       .send(
         error.constraint === "users_table_email_unique"
           ? { message: "Email already exist." }
@@ -97,7 +97,7 @@ router.post("/sign-in", async (req, res) => {
     }
   } catch (e) {
     const error = e as unknown as NeonDbError;
-    return res.status(500).send(error ?? { message: "Error encountered" });
+    return res.status(400).send(error ?? { message: "Error encountered" });
   }
 });
 
