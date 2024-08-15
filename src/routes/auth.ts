@@ -6,8 +6,8 @@ import { eq } from "drizzle-orm";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
-import { insertUserSchema, usersTable, db } from "../../db/index";
-import { emailZodSchema, passwordZodSchema } from "../../helper/index";
+import { insertUserSchema, usersTable, db } from "../db/index";
+import { emailZodSchema, passwordZodSchema } from "../helper/index";
 
 const authRoute = express.Router();
 

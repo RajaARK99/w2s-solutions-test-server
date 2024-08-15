@@ -2,8 +2,8 @@ import { count, eq } from "drizzle-orm";
 import express from "express";
 import jwt from "jsonwebtoken";
 
-import { db, tasksTable } from "../../db/index";
-import { omitObjectKey, dateSchema } from "../../helper/index";
+import { db, tasksTable } from "../db/index";
+import { omitObjectKey, dateSchema } from "../helper/index";
 
 const tasksRouter = express.Router();
 
