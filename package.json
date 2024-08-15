@@ -10,7 +10,13 @@
     "start:dist": "node dist/src/index.js",
     "lint": "eslint --fix src test",
     "typecheck": "tsc --noEmit",
-    "vercel-build": "echo Hello"
+    "vercel-build": "echo Hello",
+    "introspect": "drizzle-kit introspect",
+    "generate": "drizzle-kit generate",
+    "migrate": "drizzle-kit migrate",
+    "studio": "drizzle-kit studio",
+    "push": "drizzle-kit push",
+    "drop": "drizzle-kit drop"
   },
   "keywords": [],
   "dependencies": {
@@ -33,6 +39,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/morgan": "^1.9.9",
     "@types/node": "^22.3.0",
+    "drizzle-kit": "^0.24.0",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"

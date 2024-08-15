@@ -1,5 +1,5 @@
 {
-  "id": "1d1d38c4-1fca-400c-b64c-49b2af05e9e0",
+  "id": "a13d66b7-3775-4872-94fe-914541e7580b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -33,12 +33,13 @@
           "primaryKey": false,
           "notNull": false
         },
-        "is_completed": {
-          "name": "is_completed",
-          "type": "boolean",
+        "status": {
+          "name": "status",
+          "type": "status",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true,
-          "default": false
+          "default": "'pending'"
         },
         "user_id": {
           "name": "user_id",
@@ -117,7 +118,16 @@
       }
     }
   },
-  "enums": {},
+  "enums": {
+    "public.status": {
+      "name": "status",
+      "schema": "public",
+      "values": [
+        "pending",
+        "completed"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "_meta": {

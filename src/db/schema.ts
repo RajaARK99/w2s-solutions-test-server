@@ -5,11 +5,14 @@ import {
   timestamp,
   varchar,
   uuid,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
 import { nameZodSchema, passwordZodSchema } from "../helper/index";
+
+export const statusEnum = pgEnum("status", ["pending", "completed"]);
 
 const usersTable = pgTable("users_table", {
   id: uuid("id").defaultRandom().primaryKey(),
@@ -23,7 +26,7 @@ const tasksTable = pgTable("tasks_table", {
   title: varchar("title", { length: 256 }).notNull(),
   description: text("description"),
   dueDate: timestamp("due_date"),
-  isCompleted: boolean("is_completed").notNull().default(false),
+  status: statusEnum("status").notNull().default("pending"),
   userId: uuid("user_id")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),

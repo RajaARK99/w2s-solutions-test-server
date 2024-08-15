@@ -1,9 +1,15 @@
+DO $$ BEGIN
+ CREATE TYPE "public"."status" AS ENUM('pending', 'completed');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "tasks_table" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"title" varchar(256) NOT NULL,
 	"description" text,
 	"due_date" timestamp,
-	"is_completed" boolean DEFAULT false NOT NULL,
+	"status" "status" DEFAULT 'pending' NOT NULL,
 	"user_id" uuid NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
